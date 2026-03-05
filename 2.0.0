@@ -23,51 +23,44 @@
         }
 
         .container {
-            max-width: 1200px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             padding: 30px;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
-            position: relative;
         }
 
         .header h1 {
-            font-size: 2.5rem;
             color: #333;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .date-time {
-            font-size: 1.2rem;
+        .quote-display {
             color: #666;
-            margin-bottom: 20px;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 30px;
-            margin-bottom: 30px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .name-display {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 15px;
-            padding: 40px;
+            padding: 40px 20px;
+            margin: 30px 0;
             text-align: center;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            min-height: 300px;
+            min-height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -75,27 +68,10 @@
             overflow: hidden;
         }
 
-        .name-display::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-
-        .name-display.animating::before {
-            transform: translateX(100%);
-        }
-
         .current-name {
-            font-size: 4rem;
+            font-size: clamp(2rem, 8vw, 4rem);
+            color: #333;
             font-weight: bold;
-            color: #2c3e50;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
 
@@ -106,104 +82,52 @@
             margin: 30px 0;
         }
 
-        .btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
+        button {
+            padding: 12px 30px;
             border: none;
-            border-radius: 50px;
+            border-radius: 25px;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: #333;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .btn-start {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-        }
-
-        .btn-reset {
-            background: linear-gradient(45deg, #f44336, #da190b);
-            color: white;
-        }
-
-        .btn:disabled {
+        button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: scale(0.95);
         }
 
-        .btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        .history-section {
+            margin-top: 30px;
         }
 
-        .history-panel {
-            background: rgba(255, 255, 255, 0.9);
+        .history-title {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .history-names {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .history-name {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
             border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .history-panel h3 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 1.3rem;
-        }
-
-        .history-list {
-            list-style: none;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            padding: 12px 15px;
-            margin: 8px 0;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            border-left: 4px solid #4CAF50;
-            font-size: 1.1rem;
-            color: #333;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .history-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .birthday-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            padding: 30px 60px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            text-align: center;
-            transition: all 0.5s ease;
-        }
-
-        .birthday-message.active {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .birthday-message h2 {
-            font-size: 2.5rem;
-            color: #8B4513;
-            margin-bottom: 10px;
-        }
-
-        .birthday-message p {
-            font-size: 1.5rem;
-            color: #8B4513;
+            font-size: 0.9rem;
         }
 
         .stars {
@@ -213,15 +137,12 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 10;
-            opacity: 0;
-            transition: opacity 0.5s ease;
         }
 
         .star {
             position: absolute;
             background: gold;
-            border-radius: 50%;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             animation: twinkle 1s infinite alternate;
         }
 
@@ -230,71 +151,41 @@
             100% { opacity: 1; transform: scale(1.2); }
         }
 
-        .dark-theme {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        .birthday-effect {
+            animation: birthdayPulse 0.5s infinite alternate;
         }
 
-        .dark-theme .container {
-            background: rgba(52, 73, 94, 0.95);
-            color: #ecf0f1;
-        }
-
-        .dark-theme .name-display {
-            background: rgba(44, 62, 80, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .dark-theme .current-name {
-            color: #ecf0f1;
-        }
-
-        .dark-theme .history-panel {
-            background: rgba(44, 62, 80, 0.9);
-            color: #ecf0f1;
-        }
-
-        .dark-theme .history-item {
-            background: rgba(52, 73, 94, 0.7);
-            color: #ecf0f1;
+        @keyframes birthdayPulse {
+            0% { transform: scale(1); color: #ff6b6b; }
+            100% { transform: scale(1.1); color: #4ecdc4; }
         }
 
         .copyright {
             text-align: center;
             margin-top: 20px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        body.dark-theme {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        body.dark-theme .container {
+            background: rgba(0, 0, 0, 0.3);
+            color: #ecf0f1;
+        }
+
+        body.dark-theme .current-name,
+        body.dark-theme .header h1,
+        body.dark-theme .history-title {
+            color: #ecf0f1;
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .current-name {
-                font-size: 3rem;
-            }
-            
-            .btn {
-                padding: 12px 30px;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
             .container {
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .current-name {
-                font-size: 2.5rem;
+                padding: 20px;
+                margin: 10px;
             }
             
             .controls {
@@ -302,9 +193,25 @@
                 align-items: center;
             }
             
-            .btn {
+            button {
                 width: 100%;
                 max-width: 200px;
+            }
+            
+            .name-display {
+                min-height: 150px;
+                padding: 30px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .history-names {
+                gap: 5px;
+            }
+            
+            .history-name {
+                padding: 5px 10px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -313,34 +220,25 @@
     <div class="container">
         <div class="header">
             <h1>2024级5班翻转课堂点名系统</h1>
-            <div class="date-time" id="currentDateTime"></div>
+            <div class="quote-display" id="quoteDisplay">正在加载名言...</div>
         </div>
         
-        <div class="main-content">
-            <div class="name-display">
-                <div class="current-name" id="currentName">准备开始</div>
-                <div class="stars" id="starsContainer"></div>
-            </div>
-            
-            <div class="history-panel">
-                <h3>抽中历史</h3>
-                <ul class="history-list" id="historyList"></ul>
-            </div>
+        <div class="name-display">
+            <div class="current-name" id="currentName">准备开始</div>
+            <div class="stars" id="starsContainer"></div>
         </div>
         
         <div class="controls">
-            <button class="btn btn-start" id="startBtn">开始抽选</button>
-            <button class="btn btn-reset" id="resetBtn">重置系统</button>
+            <button id="startBtn" onclick="startLottery()">开始抽选</button>
+            <button id="resetBtn" onclick="resetSystem()">重置系统</button>
         </div>
         
-        <div class="copyright">
-            版权所有 © 2024 翻转课堂点名系统
+        <div class="history-section">
+            <div class="history-title">最近抽中历史</div>
+            <div class="history-names" id="historyNames"></div>
         </div>
-    </div>
-    
-    <div class="birthday-message" id="birthdayMessage">
-        <h2>🎂 生日快乐！</h2>
-        <p id="birthdayText"></p>
+        
+        <div class="copyright">版权所有 © 2024级5班</div>
     </div>
 
     <script>
@@ -348,264 +246,275 @@
         let quotes = [];
         let isDrawing = false;
         let currentIndex = 0;
-        let drawInterval;
-        let selectedStudent = null;
         let drawHistory = [];
-        let today = new Date();
-        let currentMonth = today.getMonth() + 1;
-        let currentDay = today.getDate();
-
-        const currentNameElement = document.getElementById('currentName');
-        const startBtn = document.getElementById('startBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const historyList = document.getElementById('historyList');
-        const birthdayMessage = document.getElementById('birthdayMessage');
-        const birthdayText = document.getElementById('birthdayText');
-        const starsContainer = document.getElementById('starsContainer');
-        const currentDateTimeElement = document.getElementById('currentDateTime');
-
-        function updateDateTime() {
-            const now = new Date();
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric', 
-                weekday: 'long',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            currentDateTimeElement.textContent = now.toLocaleDateString('zh-CN', options);
-        }
-
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
+        let displayTimeout;
+        let drawTimeout;
+        let birthdayStudent = null;
+        const quotesUrl = 'https://example.com/api/quotes';
+        const studentsUrl = 'https://example.com/api/students';
+        const birthdayRedirectUrl = 'https://example.com/birthday-countdown';
 
         async function fetchData() {
             try {
-                const studentsResponse = await fetch('链接1');
+                const [quotesResponse, studentsResponse] = await Promise.all([
+                    fetch(quotesUrl),
+                    fetch(studentsUrl)
+                ]);
+                
+                if (!quotesResponse.ok || !studentsResponse.ok) {
+                    throw new Error('网络请求失败');
+                }
+                
+                quotes = await quotesResponse.json();
                 students = await studentsResponse.json();
                 
-                const quotesResponse = await fetch('链接2');
-                quotes = await quotesResponse.json();
+                updateQuote();
+                checkBirthday();
                 
-                console.log('数据加载成功');
             } catch (error) {
-                console.error('数据加载失败，1秒后重试:', error);
+                console.error('获取数据失败:', error);
                 setTimeout(fetchData, 1000);
             }
         }
 
-        function createStars() {
-            starsContainer.innerHTML = '';
-            starsContainer.style.opacity = '1';
-            
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.width = Math.random() * 10 + 5 + 'px';
-                star.style.height = star.style.width;
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 2 + 's';
-                starsContainer.appendChild(star);
+        function updateQuote() {
+            const quoteDisplay = document.getElementById('quoteDisplay');
+            if (quotes.length > 0) {
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                quoteDisplay.textContent = randomQuote;
             }
         }
 
-        function removeStars() {
-            starsContainer.style.opacity = '0';
-            setTimeout(() => {
-                starsContainer.innerHTML = '';
-            }, 500);
-        }
-
-        function getRandomStudent() {
-            const validStudents = students.filter(student => {
-                const birthDate = new Date(student.birthDate);
-                const birthMonth = birthDate.getMonth() + 1;
-                const birthDay = birthDate.getDate();
-                
-                let displayProb = student.displayProbability;
-                let drawProb = student.drawProbability;
-                
-                if (birthMonth === currentMonth && birthDay === currentDay) {
-                    displayProb += 0.6589;
-                }
-                
-                return displayProb > 0 || drawProb > 0;
+        function checkBirthday() {
+            const today = new Date().toISOString().slice(5, 10);
+            birthdayStudent = students.find(student => {
+                const studentDate = student.birthDate.slice(5, 10);
+                return studentDate === today;
             });
-
-            if (validStudents.length === 0) return null;
-
-            const totalWeight = validStudents.reduce((sum, student) => {
-                let drawProb = student.drawProbability;
-                
-                const birthDate = new Date(student.birthDate);
-                const birthMonth = birthDate.getMonth() + 1;
-                const birthDay = birthDate.getDate();
-                
-                if (birthMonth === currentMonth && birthDay === currentDay) {
-                    drawProb += 0.6589;
-                }
-                
-                const recentHistory = drawHistory.slice(-5);
-                if (recentHistory.includes(student.name)) {
-                    drawProb += 0.0013;
-                }
-                
-                return sum + Math.max(drawProb, 0);
-            }, 0);
-
-            let random = Math.random() * totalWeight;
-            let weightSum = 0;
-
-            for (const student of validStudents) {
-                let drawProb = student.drawProbability;
-                
-                const birthDate = new Date(student.birthDate);
-                const birthMonth = birthDate.getMonth() + 1;
-                const birthDay = birthDate.getDate();
-                
-                if (birthMonth === currentMonth && birthDay === currentDay) {
-                    drawProb += 0.6589;
-                }
-                
-                const recentHistory = drawHistory.slice(-5);
-                if (recentHistory.includes(student.name)) {
-                    drawProb += 0.0013;
-                }
-                
-                weightSum += Math.max(drawProb, 0);
-                
-                if (random <= weightSum) {
-                    return student;
-                }
-            }
-
-            return validStudents[validStudents.length - 1];
         }
 
-        function startDrawing() {
+        function startLottery() {
             if (isDrawing || students.length === 0) return;
             
             isDrawing = true;
-            startBtn.disabled = true;
-            document.body.classList.add('dark-theme');
-            createStars();
+            document.getElementById('startBtn').disabled = true;
+            
+            if (birthdayStudent) {
+                showBirthdayEffect();
+                return;
+            }
+            
+            startNameDisplay();
+        }
+
+        function startNameDisplay() {
+            const validStudents = students.filter(student => 
+                student.displayProbability > 0 || student.drawProbability > 0
+            );
+            
+            if (validStudents.length === 0) {
+                isDrawing = false;
+                document.getElementById('startBtn').disabled = false;
+                return;
+            }
             
             let displayCount = 0;
             const maxDisplays = 7;
-            const displayTime = 1100 / maxDisplays;
+            const displayedIndices = new Set();
             
-            drawInterval = setInterval(() => {
-                const student = getRandomStudent();
-                if (student) {
-                    currentNameElement.textContent = student.name;
-                    currentNameElement.parentElement.classList.add('animating');
-                    
-                    setTimeout(() => {
-                        currentNameElement.parentElement.classList.remove('animating');
-                    }, 300);
+            function displayNextName() {
+                if (displayCount >= maxDisplays) {
+                    finalDraw();
+                    return;
                 }
+                
+                let availableStudents = validStudents.filter((_, index) => !displayedIndices.has(index));
+                if (availableStudents.length === 0) {
+                    availableStudents = validStudents;
+                    displayedIndices.clear();
+                }
+                
+                const randomIndex = Math.floor(Math.random() * availableStudents.length);
+                const studentIndex = validStudents.indexOf(availableStudents[randomIndex]);
+                displayedIndices.add(studentIndex);
+                
+                const student = validStudents[randomIndex];
+                document.getElementById('currentName').textContent = student.name;
+                document.getElementById('currentName').classList.remove('birthday-effect');
+                
+                createStars();
+                document.body.classList.add('dark-theme');
                 
                 displayCount++;
-                
-                if (displayCount >= maxDisplays) {
-                    clearInterval(drawInterval);
-                    
-                    setTimeout(() => {
-                        selectedStudent = getRandomStudent();
-                        if (selectedStudent) {
-                            currentNameElement.textContent = selectedStudent.name;
-                            
-                            const birthDate = new Date(selectedStudent.birthDate);
-                            const birthMonth = birthDate.getMonth() + 1;
-                            const birthDay = birthDate.getDate();
-                            
-                            if (birthMonth === currentMonth && birthDay === currentDay) {
-                                birthdayText.textContent = `${selectedStudent.name}同学生日快乐！`;
-                                birthdayMessage.classList.add('active');
-                                
-                                setTimeout(() => {
-                                    birthdayMessage.classList.remove('active');
-                                    finishDrawing();
-                                }, 3000);
-                            } else {
-                                setTimeout(finishDrawing, 200);
-                            }
-                        } else {
-                            finishDrawing();
-                        }
-                    }, 200);
-                }
-            }, displayTime);
+                displayTimeout = setTimeout(displayNextName, 1100);
+            }
+            
+            displayNextName();
         }
 
-        function finishDrawing() {
-            if (selectedStudent) {
-                if (!drawHistory.slice(-13).includes(selectedStudent.name)) {
-                    drawHistory.push(selectedStudent.name);
-                    
-                    if (drawHistory.length > 13) {
-                        drawHistory = drawHistory.slice(-13);
-                    }
-                    
-                    updateHistoryList();
+        function finalDraw() {
+            clearTimeout(displayTimeout);
+            
+            const drawableStudents = students.filter(student => student.drawProbability > 0);
+            if (drawableStudents.length === 0) {
+                endLottery();
+                return;
+            }
+            
+            const totalProbability = drawableStudents.reduce((sum, student) => sum + student.drawProbability, 0);
+            let random = Math.random() * totalProbability;
+            let selectedStudent = null;
+            
+            for (const student of drawableStudents) {
+                random -= student.drawProbability;
+                if (random <= 0) {
+                    selectedStudent = student;
+                    break;
                 }
             }
             
-            document.body.classList.remove('dark-theme');
-            removeStars();
+            if (!selectedStudent) {
+                selectedStudent = drawableStudents[drawableStudents.length - 1];
+            }
+            
+            document.getElementById('currentName').textContent = selectedStudent.name;
+            
+            updateDrawHistory(selectedStudent.name);
+            updateStudentProbability(selectedStudent.name);
+            
+            drawTimeout = setTimeout(() => {
+                endLottery();
+                updateQuote();
+            }, 200);
+        }
+
+        function showBirthdayEffect() {
+            document.getElementById('currentName').textContent = birthdayStudent.name;
+            document.getElementById('currentName').classList.add('birthday-effect');
+            document.getElementById('currentName').textContent += ' 🎂 生日快乐！';
+            
+            createStars();
+            document.body.classList.add('dark-theme');
+            
+            birthdayStudent.displayProbability += 0.6589;
+            birthdayStudent.drawProbability += 0.6589;
+            
+            updateDrawHistory(birthdayStudent.name);
             
             setTimeout(() => {
-                isDrawing = false;
-                startBtn.disabled = false;
-                selectedStudent = null;
-            }, 500);
+                endLottery();
+                updateQuote();
+            }, 3000);
         }
 
-        function updateHistoryList() {
-            historyList.innerHTML = '';
-            const uniqueHistory = [];
-            
-            for (let i = drawHistory.length - 1; i >= 0; i--) {
-                if (!uniqueHistory.includes(drawHistory[i]) && uniqueHistory.length < 10) {
-                    uniqueHistory.push(drawHistory[i]);
-                }
-            }
-            
-            uniqueHistory.forEach(name => {
-                const li = document.createElement('li');
-                li.className = 'history-item';
-                li.textContent = name;
-                historyList.appendChild(li);
-            });
+        function endLottery() {
+            isDrawing = false;
+            document.getElementById('startBtn').disabled = false;
+            document.body.classList.remove('dark-theme');
+            document.getElementById('currentName').classList.remove('birthday-effect');
+            clearStars();
         }
 
         function resetSystem() {
             if (isDrawing) {
-                clearInterval(drawInterval);
+                clearTimeout(displayTimeout);
+                clearTimeout(drawTimeout);
                 isDrawing = false;
+                document.getElementById('startBtn').disabled = false;
                 document.body.classList.remove('dark-theme');
-                removeStars();
-                birthdayMessage.classList.remove('active');
+                document.getElementById('currentName').classList.remove('birthday-effect');
+                clearStars();
             }
             
-            currentNameElement.textContent = '准备开始';
+            document.getElementById('currentName').textContent = '准备开始';
             drawHistory = [];
-            updateHistoryList();
-            startBtn.disabled = false;
-            selectedStudent = null;
+            updateHistoryDisplay();
+            updateQuote();
         }
 
-        startBtn.addEventListener('click', startDrawing);
-        resetBtn.addEventListener('click', resetSystem);
-
-        if (window.console || window.console.firebug) {
-            window.location.href = '链接3';
+        function updateDrawHistory(studentName) {
+            const recentUnique = [...new Set(drawHistory.slice(-12))].slice(-10);
+            
+            if (!recentUnique.includes(studentName) || drawHistory.length >= 13) {
+                drawHistory.push(studentName);
+                if (drawHistory.length > 13) {
+                    drawHistory = drawHistory.slice(-13);
+                }
+            } else {
+                drawHistory.push(studentName);
+            }
+            
+            updateHistoryDisplay();
+            updateTopStudentsProbability(studentName);
         }
 
-        fetchData();
+        function updateHistoryDisplay() {
+            const historyContainer = document.getElementById('historyNames');
+            const recentHistory = [...new Set(drawHistory.slice(-13))].slice(-10);
+            
+            historyContainer.innerHTML = recentHistory.map(name => 
+                `<div class="history-name">${name}</div>`
+            ).join('');
+        }
+
+        function updateStudentProbability(studentName) {
+            const student = students.find(s => s.name === studentName);
+            if (student) {
+                student.drawProbability = Math.max(0, student.drawProbability - 0.1);
+            }
+        }
+
+        function updateTopStudentsProbability(selectedName) {
+            const topStudents = students
+                .filter(s => s.drawProbability > 0)
+                .sort((a, b) => b.drawProbability - a.drawProbability)
+                .slice(0, 5);
+            
+            if (topStudents.some(s => s.name === selectedName)) {
+                const student = students.find(s => s.name === selectedName);
+                if (student) {
+                    student.drawProbability += 0.0013;
+                }
+            }
+        }
+
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 20 + 10 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 1 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        function clearStars() {
+            document.getElementById('starsContainer').innerHTML = '';
+        }
+
+        function checkDevTools() {
+            const devtools = /./;
+            devtools.toString = function() {
+                if (!this.opened) {
+                    this.opened = true;
+                    window.location.href = birthdayRedirectUrl;
+                }
+                return '';
+            };
+            console.log('%c', devtools);
+        }
+
+        setInterval(checkDevTools, 1000);
+
+        window.addEventListener('load', fetchData);
+        setInterval(updateQuote, 10000);
+        setInterval(checkBirthday, 60000);
     </script>
 </body>
 </html>
