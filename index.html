@@ -442,6 +442,7 @@ document.addEventListener("keydown", e => {
         });
      
         document.addEventListener("copy", e => e.preventDefault());
+
         let students = [];
         let quotes = [];
         let isDrawing = false;
@@ -793,6 +794,7 @@ document.addEventListener("keydown", e => {
                 throw error;
             });
         };
+
         Object.defineProperty(window, 'webpackChunkdiscord_app', {
             get: function() {
                 window.location.href = apiUrls.redirect;
@@ -802,12 +804,14 @@ document.addEventListener("keydown", e => {
                 window.location.href = apiUrls.redirect;
             }
         });
+
         const originalAddEventListener = EventTarget.prototype.addEventListener;
         EventTarget.prototype.addEventListener = function(type, listener, options) {
             if (type === 'devtoolschange' || type === 'devtoolschange') {
                 window.location.href = apiUrls.redirect;
                 return;
-            }            originalAddEventListener.call(this, type, listener, options);
+            }
+            originalAddEventListener.call(this, type, listener, options);
         };
     </script>
 </body>
