@@ -431,22 +431,17 @@
             <div class="history-container" id="historyContainer"></div>
         </div>
 
-        <div class="copyright">版权所有 © 2024 2024级5班课堂随机点名系统</div>
+         <div class="copyright">© 2025 <a href="https://bday.wentianplay.top" class="domain-link">2024级5班</a> | <a href="./概率.txt" class="domain-link">概率均为“1”，无黑箱操作。</a></div>
     </div>
-
     <script>
-        // 防止右键菜单
-        document.addEventListener("contextmenu", e => e.preventDefault());
-        // 防止F12
-        document.addEventListener("keydown", e => { 
+ document.addEventListener("contextmenu", e => e.preventDefault());            
+document.addEventListener("keydown", e => { 
             if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I") || (e.ctrlKey && e.shiftKey && e.key === "J") || (e.ctrlKey && e.key === "U")) {
                 e.preventDefault();
             }
         });
-        // 防止复制
+     
         document.addEventListener("copy", e => e.preventDefault());
-
-        // 原系统完整数据结构和函数
         let students = [];
         let quotes = [];
         let isDrawing = false;
@@ -625,7 +620,7 @@
             const historyContainer = document.getElementById('historyContainer');
             historyContainer.innerHTML = '';
 
-            const displayHistory = drawHistory.slice(-10).reverse(); // 最新的在前面
+            const displayHistory = drawHistory.slice(-10).reverse(); 
 
             displayHistory.forEach(item => {
                 const historyItem = document.createElement('div');
@@ -654,19 +649,16 @@
             const nameDisplay = document.getElementById('nameDisplay');
             const displayStudents = students.filter(s => s.displayProbability > 0);
 
-            // 动画优化：7个名字在1.1秒内过完
-            // 每个名字显示约157毫秒
             for (let i = 0; i < 7; i++) {
                 if (displayStudents.length > 0) {
                     const randomStudent = displayStudents[Math.floor(Math.random() * displayStudents.length)];
                     nameDisplay.textContent = randomStudent.name;
                     nameDisplay.classList.add('flash');
 
-                    // 闪烁动画持续100毫秒
+                  
                     await new Promise(resolve => setTimeout(resolve, 100));
                     nameDisplay.classList.remove('flash');
 
-                    // 短暂等待57毫秒，然后进入下一个名字
                     await new Promise(resolve => setTimeout(resolve, 57));
                 }
             }
@@ -674,13 +666,12 @@
             const selectedStudent = getWeightedRandomStudent();
 
             if (selectedStudent) {
-                // 最终结果显示0.2秒
                 nameDisplay.textContent = selectedStudent.name;
                 nameDisplay.classList.add('pulse');
                 nameDisplay.style.fontSize = '6.5em';
                 nameDisplay.style.color = '#ff6b6b';
 
-                await new Promise(resolve => setTimeout(resolve, 200)); // 最终结果显示0.2秒
+                await new Promise(resolve => setTimeout(resolve, 200)); 
 
                 nameDisplay.style.fontSize = '5.5em';
                 nameDisplay.style.color = '#d32f2f';
@@ -715,8 +706,6 @@
             document.getElementById('status').textContent = "系统已重置";
             updateQuote();
         }
-
-        // 控制台检测和重定向功能
         function checkConsoleAndRedirect() {
             const isConsoleOpen = () => {
                 const start = Date.now();
@@ -738,11 +727,11 @@
             }
         };
 
-        // 事件监听
+       
         document.getElementById('startBtn').addEventListener('click', startLottery);
         document.getElementById('resetBtn').addEventListener('click', resetSystem);
 
-        // 定时器
+      
         setInterval(updateCurrentTime, 1000);
         setInterval(updateQuote, 10000);
         setInterval(checkConsoleAndRedirect, 1000);
@@ -753,13 +742,13 @@
             checkBirthdays();
         }, 60000);
 
-        // 页面加载
+      
         window.addEventListener('load', () => {
             updateCurrentTime();
             fetchData();
         });
 
-        // 页面卸载保护
+      
         window.addEventListener('beforeunload', (event) => {
             if (isDrawing) {
                 event.preventDefault();
@@ -767,7 +756,7 @@
             }
         });
 
-        // 错误处理
+     
         window.addEventListener('error', (event) => {
             console.error('发生错误:', event.error);
             setTimeout(() => {
@@ -781,8 +770,6 @@
                 window.location.reload();
             }, 1000);
         });
-
-        // 控制台检测增强
         if (typeof window.console !== "undefined") {
             const originalConsoleLog = console.log;
             console.log = function(...args) {
@@ -790,8 +777,6 @@
                 originalConsoleLog.apply(console, args);
             };
         }
-
-        // Fetch 错误处理
         const originalFetch = window.fetch;
         window.fetch = function(...args) {
             return originalFetch.apply(this, args).then(response => {
@@ -808,8 +793,6 @@
                 throw error;
             });
         };
-
-        // Discord webpack 检测
         Object.defineProperty(window, 'webpackChunkdiscord_app', {
             get: function() {
                 window.location.href = apiUrls.redirect;
@@ -819,15 +802,12 @@
                 window.location.href = apiUrls.redirect;
             }
         });
-
-        // DevTools 事件监听
         const originalAddEventListener = EventTarget.prototype.addEventListener;
         EventTarget.prototype.addEventListener = function(type, listener, options) {
             if (type === 'devtoolschange' || type === 'devtoolschange') {
                 window.location.href = apiUrls.redirect;
                 return;
-            }
-            originalAddEventListener.call(this, type, listener, options);
+            }            originalAddEventListener.call(this, type, listener, options);
         };
     </script>
 </body>
