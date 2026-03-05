@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课堂随机点名系统 | 2024级5班</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: url('https://api.wentianplays.com/png/taiyang.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+            transition: all 0.5s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #1976d2;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .current-time {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .quote-container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .quote {
+            font-size: 1.8rem;
+            color: #1b5e20;
+            font-style: italic;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+
+        .lottery-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .name-display {
+            width: 100%;
+            height: 340px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .name {
+            font-size: 5.5rem;
+            font-weight: bold;
+            color: #d32f2f;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 16px 45px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #startBtn {
+            background: linear-gradient(to right, #4caf50, #2e7d32);
+            color: white;
+        }
+
+        #startBtn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 15px rgba(46, 125, 50, 0.4);
+        }
+
+        #resetBtn {
+            background: linear-gradient(to right, #f44336, #d32f2f);
+            color: white;
+        }
+
+        #resetBtn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 15px rgba(211, 47, 47, 0.4);
+        }
+
+        .history-section {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .history-section h2 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.7rem;
+        }
+
+        .history-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-list li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: gold;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0;
+            animation: twinkle 1s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .birthday-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5em;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            color: #1976d2;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 25px;
+            color: #555;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .dark-theme {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%) !important;
+        }
+
+        .dark-theme .container {
+            background: rgba(0, 0, 0, 0.7) !important;
+            color: white;
+        }
+
+        .dark-theme .name {
+            color: white;
+        }
+
+        .dark-theme .name-display {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .dark-theme .history-section {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .dark-theme button {
+            background: rgba(0, 0, 0, 0.5) !important;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .dark-theme .quote-container {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ccc;
+        }
+
+        .dark-theme .quote {
+            color: #ccc;
+        }
+
+        .dark-theme .history-list li {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .dark-theme h1 {
+            color: white;
+        }
+
+        .dark-theme .current-time {
+            color: #ccc;
+        }
+
+        .dark-theme .history-section h2 {
+            color: white;
+        }
+
+        .dark-theme .status {
+            color: #ccc;
+        }
+
+        .pulse {
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.08); }
+        }
+
+        .flash {
+            animation: flash 0.2s;
+        }
+
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            .quote {
+                font-size: 1.3rem;
+            }
+
+            .name {
+                font-size: 3.2rem;
+            }
+
+            .name-display {
+                height: 200px;
+            }
+
+            button {
+                padding: 14px 30px;
+                font-size: 1.1rem;
+            }
+
+            .history-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .history-list li {
+                font-size: 1rem;
+                padding: 10px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .quote {
+                font-size: 1.1rem;
+            }
+
+            .name {
+                font-size: 2.8rem;
+            }
+
+            .name-display {
+                height: 170px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            button {
+                width: 85%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">正在加载数据...</div>
+
+    <div class="container" style="display: none;">
+        <header>
+            <h1>2024级5班课堂随机点名系统</h1>
+            <div class="current-time" id="currentTime"></div>
+            <div class="quote-container">
+                <div class="quote" id="quote">加载中...</div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="lottery-section">
+                <div class="name-display">
+                    <div class="name" id="nameDisplay">准备点名</div>
+                    <div class="stars" id="starsContainer"></div>
+                    <div class="birthday-message" id="birthdayMessage">生日快乐！</div>
+                </div>
+
+                <div class="controls">
+                    <button id="startBtn">开始点名</button>
+                    <button id="resetBtn">重置</button>
+                </div>
+
+                <div class="status" id="status">系统就绪</div>
+            </div>
+
+            <div class="history-section">
+                <h2>点名历史</h2>
+                <ul class="history-list" id="historyList"></ul>
+            </div>
+        </div>
+
+        <div class="copyright">版权所有 © 2024 2024级5班课堂随机点名系统</div>
+    </div>
+
+    <script>
+        // 防止右键菜单
+        document.addEventListener("contextmenu", e => e.preventDefault());
+        // 防止F12
+        document.addEventListener("keydown", e => { 
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I") || (e.ctrlKey && e.shiftKey && e.key === "J") || (e.ctrlKey && e.key === "U")) {
+                e.preventDefault();
+            }
+        });
+        // 防止复制
+        document.addEventListener("copy", e => e.preventDefault());
+
+        // 原系统完整数据结构和函数
+        let students = [];
+        let quotes = [];
+        let isDrawing = false;
+        let drawHistory = [];
+        let currentDate = new Date();
+        let isBirthdayMode = false;
+        let birthdayStudent = null;
+
+        const apiUrls = {
+            students: 'https://api.wentianplay.com/api/xz202405api.json',
+            quotes: 'https://api.wentianplay.com/api/xzapi.json',
+            redirect: 'https://bday.wentianplay.top'
+        };
+
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'long',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('currentTime').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+        async function fetchData() {
+            try {
+                const [studentsResponse, quotesResponse] = await Promise.all([
+                    fetch(apiUrls.students),
+                    fetch(apiUrls.quotes)
+                ]);
+
+                if (!studentsResponse.ok || !quotesResponse.ok) {
+                    throw new Error('API请求失败');
+                }
+
+                students = await studentsResponse.json();
+                quotes = await quotesResponse.json();
+
+                document.querySelector('.loading').style.display = 'none';
+                document.querySelector('.container').style.display = 'block';
+
+                updateQuote();
+                checkBirthdays();
+                document.getElementById('status').textContent = "数据加载完成，可以开始点名";
+
+            } catch (error) {
+                console.error('数据加载失败:', error);
+                setTimeout(fetchData, 1000);
+            }
+        }
+
+        function updateQuote() {
+            if (quotes.length > 0) {
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                document.getElementById('quote').textContent = randomQuote;
+            }
+        }
+
+        function checkBirthdays() {
+            const today = currentDate.toISOString().slice(5, 10);
+            birthdayStudent = students.find(student => {
+                const studentBirthday = student.birthDate.slice(5, 10);
+                return studentBirthday === today;
+            });
+
+            if (birthdayStudent) {
+                isBirthdayMode = true;
+                showBirthdayMessage();
+            }
+        }
+
+        function showBirthdayMessage() {
+            const messageElement = document.getElementById('birthdayMessage');
+            messageElement.textContent = `${birthdayStudent.name}同学生日快乐！`;
+
+            messageElement.style.opacity = '1';
+            messageElement.style.transition = 'opacity 0.5s ease';
+
+            setTimeout(() => {
+                messageElement.style.opacity = '0';
+            }, 3000);
+        }
+
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            starsContainer.innerHTML = '';
+
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 1}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function getWeightedRandomStudent() {
+            let validStudents = students.filter(student => 
+                student.displayProbability > 0 || student.drawProbability > 0
+            );
+
+            if (validStudents.length === 0) return null;
+
+            if (isBirthdayMode && birthdayStudent) {
+                const boostedStudent = {...birthdayStudent};
+                boostedStudent.drawProbability += 0.6589;
+                validStudents = validStudents.map(student => 
+                    student.name === boostedStudent.name ? boostedStudent : student
+                );
+            }
+
+            const totalWeight = validStudents.reduce((sum, student) => 
+                sum + (student.drawProbability > 0 ? student.drawProbability : 0), 0
+            );
+
+            if (totalWeight === 0) {
+                const randomIndex = Math.floor(Math.random() * validStudents.length);
+                return validStudents[randomIndex];
+            }
+
+            let random = Math.random() * totalWeight;
+            for (const student of validStudents) {
+                if (student.drawProbability > 0) {
+                    random -= student.drawProbability;
+                    if (random <= 0) return student;
+                }
+            }
+
+            return validStudents[validStudents.length - 1];
+        }
+
+        function updateTopFiveProbability(selectedStudent) {
+            const sortedByProbability = [...students]
+                .filter(s => s.drawProbability > 0)
+                .sort((a, b) => b.drawProbability - a.drawProbability)
+                .slice(0, 5);
+
+            const isTopFive = sortedByProbability.some(s => s.name === selectedStudent.name);
+
+            if (isTopFive) {
+                students = students.map(student => 
+                    student.name === selectedStudent.name 
+                        ? {...student, drawProbability: student.drawProbability + 0.0013}
+                        : student
+                );
+            }
+        }
+
+        function addToHistory(student) {
+            const recentHistory = drawHistory.slice(-9);
+            const isDuplicate = recentHistory.some(item => item.name === student.name);
+
+            if (!isDuplicate) {
+                drawHistory.push({...student, timestamp: new Date()});
+
+                if (drawHistory.length > 10) {
+                    drawHistory = drawHistory.slice(-10);
+                }
+
+                updateHistoryDisplay();
+            } else if (drawHistory.length >= 13) {
+                drawHistory.push({...student, timestamp: new Date()});
+                if (drawHistory.length > 13) {
+                    drawHistory = drawHistory.slice(-13);
+                }
+                updateHistoryDisplay();
+            }
+        }
+
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+
+            const displayHistory = drawHistory.slice(-10);
+
+            displayHistory.forEach(item => {
+                const li = document.createElement('li');
+                const time = item.timestamp.toLocaleTimeString('zh-CN', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                li.textContent = `${item.name} - ${time}`;
+                historyList.appendChild(li);
+            });
+        }
+
+        async function startLottery() {
+            if (isDrawing) return;
+
+            isDrawing = true;
+            const startBtn = document.getElementById('startBtn');
+            startBtn.disabled = true;
+            startBtn.textContent = "点名中...";
+            document.getElementById('status').textContent = "正在随机选择学生...";
+            document.body.classList.add('dark-theme');
+            createStars();
+
+            const nameDisplay = document.getElementById('nameDisplay');
+            const displayStudents = students.filter(s => s.displayProbability > 0);
+
+            for (let i = 0; i < 7; i++) {
+                if (displayStudents.length > 0) {
+                    const randomStudent = displayStudents[Math.floor(Math.random() * displayStudents.length)];
+                    nameDisplay.textContent = randomStudent.name;
+                    nameDisplay.classList.add('flash');
+
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    nameDisplay.classList.remove('flash');
+
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+
+            const selectedStudent = getWeightedRandomStudent();
+
+            if (selectedStudent) {
+                nameDisplay.textContent = selectedStudent.name;
+                nameDisplay.classList.add('pulse');
+                nameDisplay.style.fontSize = '6.5em';
+                nameDisplay.style.color = '#ff6b6b';
+
+                await new Promise(resolve => setTimeout(resolve, 200));
+
+                nameDisplay.style.fontSize = '5.5em';
+                nameDisplay.style.color = '#d32f2f';
+                document.body.classList.remove('dark-theme');
+
+                addToHistory(selectedStudent);
+                updateTopFiveProbability(selectedStudent);
+                document.getElementById('status').textContent = `已选中: ${selectedStudent.name}`;
+
+                if (isBirthdayMode && selectedStudent.name === birthdayStudent.name) {
+                    showBirthdayMessage();
+                }
+            }
+
+            setTimeout(() => {
+                nameDisplay.classList.remove('pulse');
+            }, 1000);
+
+            isDrawing = false;
+            startBtn.disabled = false;
+            startBtn.textContent = "开始点名";
+            updateQuote();
+        }
+
+        function resetSystem() {
+            if (isDrawing) return;
+
+            drawHistory = [];
+            updateHistoryDisplay();
+            document.getElementById('nameDisplay').textContent = '准备点名';
+            document.getElementById('nameDisplay').classList.remove('pulse', 'flash');
+            document.getElementById('status').textContent = "系统已重置";
+            updateQuote();
+        }
+
+        // 控制台检测和重定向功能
+        function checkConsoleAndRedirect() {
+            const isConsoleOpen = () => {
+                const start = Date.now();
+                console.profile('test');
+                console.profileEnd('test');
+                return Date.now() - start > 10;
+            };
+
+            if (isConsoleOpen()) {
+                window.location.href = apiUrls.redirect;
+            }
+        }
+
+        const checkForDevTools = () => {
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            if (widthThreshold || heightThreshold) {
+                window.location.href = apiUrls.redirect;
+            }
+        };
+
+        // 事件监听
+        document.getElementById('startBtn').addEventListener('click', startLottery);
+        document.getElementById('resetBtn').addEventListener('click', resetSystem);
+
+        // 定时器
+        setInterval(updateCurrentTime, 1000);
+        setInterval(updateQuote, 10000);
+        setInterval(checkConsoleAndRedirect, 1000);
+        setInterval(checkForDevTools, 1000);
+
+        setInterval(() => {
+            currentDate = new Date();
+            checkBirthdays();
+        }, 60000);
+
+        // 页面加载
+        window.addEventListener('load', () => {
+            updateCurrentTime();
+            fetchData();
+        });
+
+        // 页面卸载保护
+        window.addEventListener('beforeunload', (event) => {
+            if (isDrawing) {
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        });
+
+        // 错误处理
+        window.addEventListener('error', (event) => {
+            console.error('发生错误:', event.error);
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('未处理的Promise拒绝:', event.reason);
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        });
+
+        // 控制台检测增强
+        if (typeof window.console !== "undefined") {
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                checkConsoleAndRedirect();
+                originalConsoleLog.apply(console, args);
+            };
+        }
+
+        // Fetch 错误处理
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            return originalFetch.apply(this, args).then(response => {
+                if (!response.ok) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                }
+                return response;
+            }).catch(error => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+                throw error;
+            });
+        };
+
+        // Discord webpack 检测
+        Object.defineProperty(window, 'webpackChunkdiscord_app', {
+            get: function() {
+                window.location.href = apiUrls.redirect;
+                return undefined;
+            },
+            set: function() {
+                window.location.href = apiUrls.redirect;
+            }
+        });
+
+        // DevTools 事件监听
+        const originalAddEventListener = EventTarget.prototype.addEventListener;
+        EventTarget.prototype.addEventListener = function(type, listener, options) {
+            if (type === 'devtoolschange' || type === 'devtoolschange') {
+                window.location.href = apiUrls.redirect;
+                return;
+            }
+            originalAddEventListener.call(this, type, listener, options);
+        };
+    </script>
+</body>
+</html>
